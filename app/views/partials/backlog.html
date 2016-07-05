@@ -27,7 +27,7 @@
 
         <round-progress
           max=50
-          current=20
+          current=stad.userstories.chartPercentDraw
           color="#69F0F0"
           bgcolor="#eaeaea"
           radius="50"
@@ -39,19 +39,31 @@
           duration="800"
           animation="easeInOutQuart"
           animation-delay="0">
-          50/20
+          50/{{stad.userstories.chartPercentDraw}}
         </round-progress>
 
 
 
           <div class="summary-stats">
-            <span class="percent">50%</span>
+            <span class="percent">{{stad.userstories.chartPercent}}%</span>
+          </div>
+
+
+          <div class="summary-stats">
+            <p class="number">{{stad.userstories.projectPoints}}</p>
+
+            <p class="description">
+              project<br>
+              points
+            </p>
+
+
           </div>
 
 
 
           <div class="summary-stats">
-            <p class="number">0</p>
+            <p class="number">{{stad.userstories.definedPoints}}</p>
 
             <p class="description">
               defined<br>
@@ -62,7 +74,7 @@
           </div>
 
           <div class="summary-stats">
-            <p class="number">0</p>
+            <p class="number">{{stad.userstories.closedPoints}}</p>
 
             <p class="description">
               closed<br>
@@ -73,16 +85,7 @@
           </div>
 
 
-          <div class="summary-stats">
-            <p class="number">0</p>
 
-            <p class="description">
-              points /<br>
-              sprint
-            </p>
-
-
-          </div>
 
 
           <div class="summary-stats">

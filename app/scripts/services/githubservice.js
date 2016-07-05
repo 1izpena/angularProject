@@ -298,12 +298,12 @@ angular.module('myAppAngularMinApp')
           else {
 
             if(githubMessageJSON.commits[i].url == null || githubMessageJSON.commits[i].url == undefined){
-              commitsParse2 = commitsParse2 +"<p> " + (githubMessageJSON.commits[i].id).substring(0, 7);
+              commitsParse2 = commitsParse2 +"<p><strong> " + (githubMessageJSON.commits[i].id).substring(0, 7)+"</strong>";
 
             }
             else {
-              commitsParse2 = commitsParse2 +"<p> <a href='"+ githubMessageJSON.commits[i].url +"'>"
-                + (githubMessageJSON.commits[i].id).substring(0, 7)+"</a>";
+              commitsParse2 = commitsParse2 +"<p> <strong><a href='"+ githubMessageJSON.commits[i].url +"'>"
+                + (githubMessageJSON.commits[i].id).substring(0, 7)+"</a></strong>";
 
             }
 
@@ -561,7 +561,7 @@ angular.module('myAppAngularMinApp')
             if(githubMessageJSON.issue.milestone.number !== null && githubMessageJSON.issue.milestone.number !== undefined &&
               githubMessageJSON.issue.milestone.title !== null && githubMessageJSON.issue.milestone.title !== undefined ){
               issueMilestoneField = "<p> <strong> Milestone #"+
-                githubMessageJSON.issue.milestone.number +
+                githubMessageJSON.issue.milestone.number +" "+
                 githubMessageJSON.issue.milestone.title + "</strong></p>";
 
 

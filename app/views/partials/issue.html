@@ -11,18 +11,10 @@
       <!-- ---- ------------  cabecera  ---------------------- --- -->
       <div class="panel-body panel-body-backlog-charts">
 
-        <!-- max:: num de userstories totales
-            current:: num userstories closed
-            color, es el color del circulo current
-            bdcolor:: el color de fondo -->
-
-
-        <!-- cambiarlo xdatos reales -->
-
 
         <round-progress
           max=50
-          current=20
+          current=stad.issues.chartPercentDraw
           color="#69F0F0"
           bgcolor="#eaeaea"
           radius="50"
@@ -35,42 +27,18 @@
           animation="easeInOutQuart"
           animation-delay="0"
           id="roundprogress-sprint">
-          50/20
+          50/{{stad.issues.chartPercentDraw}}
         </round-progress>
 
 
 
         <div class="summary-stats">
-          <span class="percent">50%</span>
-        </div>
-
-
-
-        <div class="summary-stats">
-          <p class="number">0</p>
-
-          <p class="description">
-            total<br>
-            points
-          </p>
-
-
-        </div>
-
-        <div class="summary-stats">
-          <p class="number">0</p>
-
-          <p class="description">
-            completed<br>
-            points
-          </p>
-
-
+          <span class="percent">{{stad.issues.chartPercent}}%</span>
         </div>
 
 
         <div class="summary-stats">
-          <p class="number">0</p>
+          <p class="number">{{stad.issues.openIssues}}</p>
 
           <p class="description">
             open<br>
@@ -80,9 +48,9 @@
 
         </div>
 
-        <div class="summary-stats">
-          <p class="number">0</p>
 
+        <div class="summary-stats">
+          <p class="number">{{stad.issues.closedIssues}}</p>
           <p class="description">
             closed<br>
             issues
@@ -93,16 +61,38 @@
 
 
 
+        <div class="summary-stats">
+          <p class="number">{{stad.issues.bugType}}</p>
 
-        <!-- esto lo quitamos --
+          <p class="description">
+            bug<br>
+            issues
+          </p>
+
+
+        </div>
 
         <div class="summary-stats">
-          <!-- boton que muestra o no el grafico --
-          <a ng-show="rowCollectionUserStories.length > 0" class="btn btn-graphic" ng-click="">
-            <span class="fa fa-area-chart fa-3x"></span>
-          </a>
+          <p class="number">{{stad.issues.enhaType}}</p>
 
-        </div> -->
+          <p class="description">
+            enhancement<br>
+            issues
+          </p>
+
+
+        </div>
+
+        <div class="summary-stats">
+          <p class="number">{{stad.issues.questionType}}</p>
+
+          <p class="description">
+            question<br>
+            issues
+          </p>
+
+
+        </div>
 
 
 
@@ -114,48 +104,6 @@
                               (Panel1: borrar, editar, unlink:: settings de grupo) -->
   <!----------------- end cabecera ---------------------------------------------------------->
 
-
-
-
-
-
-  <!--- grafico demomento lo quitamos -----------------------------------
-
-    <div ng-show="showgraph.show && rowCollectionUserStories.length > 0"
-         class="row row-backlog-charts-show-graph">
-      <div class="panel panel-info" id="panel-backlog-graphs">
-
-
-        <div class="panel-body panel-body-backlog-graphs">
-
-          <!-- y aqui meteriamos la grafica -->
-  <!-- hay que modificarla en base a los puntos que haya -->
-
-
-  <!-- .chart-line
-  chart-data: series data
-  chart-labels: x axis labels
-  chart-legend (default: false): show legend below the chart
-  chart-options (default: {}): Chart.js options
-  chart-series (default: []): series labels
-  chart-click (optional): onclick event handler
-  chart-hover (optional): onmousemove event handler
-  chart-colours (default to global colours): colours for the chart --
-
-
-
-
-  <canvas id="line" class="chart chart-line" chart-data="chartdata"
-          chart-labels="labels" chart-legend="false" chart-series="series"
-          chart-click="onClickpoints" >
-  </canvas>
-
-</div> <!-- end panel-body --
-
-
-</div> <!-- end panel-info --
-</div> <!-- end row-settings1::<div ng-if= "tagGroup !== '' " class="row" id="row-settings1">
-                        (Panel1: borrar, editar, unlink:: settings de grupo) -->
 
 
 

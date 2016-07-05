@@ -728,7 +728,7 @@
 
 
                       <p ng-if="isGithubMessage($index)" class="text-left">
-                        <span ng-show="getGithubMessage($index)!== ''" bind-html-compile="getGithubMessage($index)"></span>
+                        <span ng-show="getGithubMessage($index, msg)!== ''" bind-html-compile="getGithubMessage($index, msg)"></span>
                       </p>
 
 

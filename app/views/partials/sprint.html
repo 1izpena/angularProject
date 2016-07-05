@@ -423,12 +423,9 @@
             bdcolor:: el color de fondo -->
 
 
-        <!-- cambiarlo xdatos reales -->
-
-
         <round-progress
           max=50
-          current=20
+          current=stad.sprints.chartPercentDraw
           color="#69F0F0"
           bgcolor="#eaeaea"
           radius="50"
@@ -441,19 +438,20 @@
           animation="easeInOutQuart"
           animation-delay="0"
           id="roundprogress-sprint">
-          50/20
+          50/{{stad.sprints.chartPercentDraw}}
         </round-progress>
 
 
 
         <div class="summary-stats">
-          <span class="percent">50%</span>
+          <span class="percent">{{stad.sprints.chartPercent}}%</span>
         </div>
 
 
 
+
         <div class="summary-stats">
-          <p class="number">0</p>
+          <p class="number">{{stad.sprints.totalPoints}}</p>
 
           <p class="description">
             total<br>
@@ -464,7 +462,7 @@
         </div>
 
         <div class="summary-stats">
-          <p class="number">0</p>
+          <p class="number">{{stad.sprints.completedPoints}}</p>
 
           <p class="description">
             completed<br>
@@ -476,7 +474,7 @@
 
 
         <div class="summary-stats">
-          <p class="number">0</p>
+          <p class="number">{{stad.sprints.openTasks}}</p>
 
           <p class="description">
             open<br>
@@ -487,19 +485,18 @@
         </div>
 
         <div class="summary-stats">
-          <p class="number">0</p>
+          <p class="number">{{stad.sprints.closedTasks}}</p>
 
           <p class="description">
             closed<br>
             tasks
           </p>
 
-
         </div>
 
 
         <div class="summary-stats">
-          <p class="number">0</p>
+          <p class="number">{{stad.sprints.bloquedTasks}}</p>
 
           <p class="description">
             blocked<br>
@@ -511,7 +508,7 @@
 
 
         <div class="summary-stats">
-          <p class="number">0</p>
+          <p class="number">{{stad.sprints.powerTasks}}</p>
 
           <p class="description">
             power<br>
@@ -520,18 +517,6 @@
 
 
         </div>
-
-
-
-        <!-- esto lo quitamos --
-
-        <div class="summary-stats">
-          <!-- boton que muestra o no el grafico --
-          <a ng-show="rowCollectionUserStories.length > 0" class="btn btn-graphic" ng-click="">
-            <span class="fa fa-area-chart fa-3x"></span>
-          </a>
-
-        </div> -->
 
 
 

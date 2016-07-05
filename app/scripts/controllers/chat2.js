@@ -961,6 +961,13 @@ angular.module('myAppAngularMinApp')
         initVarsScrumChannelTeam();
 
 
+        $scope.stad = {};
+        $scope.stad.userstories = {};
+        $scope.stad.tasks = {};
+        $scope.stad.sprints = {};
+        $scope.stad.issues = {};
+
+
 
       }
 
@@ -994,6 +1001,22 @@ angular.module('myAppAngularMinApp')
           initVarsScrumChannelSprints();
           initVarsScrumChannelIssues();
           initVarsScrumChannelTeam();
+
+        }
+
+        /* backlog */
+        if(num == 2){
+          createStadUsTask();
+
+        }
+        /* sprints */
+        else if(num == 3){
+          createStadSprint();
+
+        }
+        /* issues */
+        else if(num == 4){
+          createStadIssue();
 
         }
 
@@ -5032,6 +5055,205 @@ angular.module('myAppAngularMinApp')
 
 
 
+      /*$scope.stad = {};
+       $scope.stad.userstories = {};
+       $scope.stad.tasks = {};
+       $scope.stad.sprints = {};
+       $scope.stad.issues = {};*/
+
+
+      function createStadUsTask (){
+
+        $scope.stad.userstories.projectPoints = 0;
+        /* para cada us mirar cuantos puntos tiene */
+        $scope.stad.userstories.definedPoints = 0;
+        /* para cada us mirar cuantos puntos tiene si esta cerrado */
+        $scope.stad.userstories.closedPoints = 0;
+        $scope.stad.userstories.chartPercent = 0;
+        $scope.stad.userstories.chartPercentDraw = 0;
+
+        $scope.chartdata [0][0] = 0;
+
+
+        if($scope.rowCollectionUserStories !== undefined &&
+          $scope.rowCollectionUserStories !== null &&
+          $scope.rowCollectionUserStories !== '' ){
+
+          $scope.stad.userstories.projectPoints = $scope.rowCollectionUserStories.length;
+          $scope.chartdata [0][0] = $scope.rowCollectionUserStories.length;
+
+          for(var i = 0; i< $scope.rowCollectionUserStories.length; i++){
+
+            $scope.stad.userstories.definedPoints += parseFloat($scope.rowCollectionUserStories[i].point.ux) +
+              parseFloat($scope.rowCollectionUserStories[i].point.design) +
+              parseFloat($scope.rowCollectionUserStories[i].point.front) +
+              parseFloat($scope.rowCollectionUserStories[i].point.back);
+
+            if($scope.rowCollectionUserStories[i].status == 'Closed'){
+              $scope.stad.userstories.closedPoints += parseFloat($scope.rowCollectionUserStories[i].point.ux) +
+                parseFloat($scope.rowCollectionUserStories[i].point.design) +
+                parseFloat($scope.rowCollectionUserStories[i].point.front) +
+                parseFloat($scope.rowCollectionUserStories[i].point.back);
+
+            }
+          }
+
+          if($scope.stad.userstories.closedPoints !== 0){
+            $scope.stad.userstories.chartPercent = ($scope.stad.userstories.closedPoints / $scope.stad.userstories.definedPoints) * 100;
+            $scope.stad.userstories.chartPercentDraw = (50 / $scope.stad.userstories.definedPoints) * $scope.stad.userstories.closedPoints;
+          }
+
+        }
+      }
+
+      function createStadSprint (){
+        $scope.stad.sprints.totalPoints = 0;
+        /* para cada us mirar cuantos puntos tiene */
+        $scope.stad.sprints.completedPoints = 0;
+        /* para cada us mirar cuantos puntos tiene si esta cerrado */
+        $scope.stad.sprints.openTasks = 0;
+        $scope.stad.sprints.closedTasks = 0;
+        $scope.stad.sprints.bloquedTasks = 0;
+        $scope.stad.sprints.powerTasks = 0;
+
+        $scope.stad.sprints.chartPercentDraw = 0;
+        $scope.stad.sprints.chartPercent = 0;
+
+        $scope.chartdata [0][0] = 0;
+
+
+
+
+        if($scope.rowCollectionUserStories !== undefined &&
+          $scope.rowCollectionUserStories !== null &&
+          $scope.rowCollectionUserStories !== '' ){
+
+          for(var i = 0; i< $scope.rowCollectionUserStories.length; i++){
+            if($scope.rowCollectionUserStories[i].sprint !== undefined &&
+              $scope.rowCollectionUserStories[i].sprint !== null &&
+              $scope.rowCollectionUserStories[i].sprint !== ''){
+              $scope.stad.sprints.totalPoints += parseFloat($scope.rowCollectionUserStories[i].point.ux) +
+                parseFloat($scope.rowCollectionUserStories[i].point.design) +
+                parseFloat($scope.rowCollectionUserStories[i].point.front) +
+                parseFloat($scope.rowCollectionUserStories[i].point.back);
+
+              if($scope.rowCollectionUserStories[i].status == 'Closed'){
+                $scope.stad.sprints.completedPoints += parseFloat($scope.rowCollectionUserStories[i].point.ux) +
+                  parseFloat($scope.rowCollectionUserStories[i].point.design) +
+                  parseFloat($scope.rowCollectionUserStories[i].point.front) +
+                  parseFloat($scope.rowCollectionUserStories[i].point.back);
+
+              }
+
+              if($scope.rowCollectionUserStories[i].tasks !== undefined &&
+                $scope.rowCollectionUserStories[i].tasks !== null &&
+                $scope.rowCollectionUserStories[i].tasks !== '' ){
+                if($scope.rowCollectionUserStories[i].tasks.length >0){
+                  for(var j= 0; j<$scope.rowCollectionUserStories[i].tasks.length; j++){
+                    if($scope.rowCollectionUserStories[i].tasks[j].status == 'Closed'){
+                      $scope.stad.sprints.closedTasks +=1;
+                    }
+                    else {
+                      $scope.stad.sprints.openTasks +=1;
+                    }
+                    if($scope.rowCollectionUserStories[i].tasks[j].requirement !== undefined &&
+                      $scope.rowCollectionUserStories[i].tasks[j].requirement !== null &&
+                      $scope.rowCollectionUserStories[i].tasks[j].requirement !== ''  ){
+
+                      if($scope.rowCollectionUserStories[i].tasks[j].requirement.iocaine == true){
+                        $scope.stad.sprints.bloquedTasks +=1;
+
+                      }
+                      if($scope.rowCollectionUserStories[i].tasks[j].requirement.blocked == true){
+                        $scope.stad.sprints.powerTasks +=1;
+
+                      }
+                    }
+                  }
+
+
+                }
+
+
+              }
+
+            }
+
+
+          }
+
+          if($scope.stad.sprints.completedPoints !== 0){
+            $scope.stad.sprints.chartPercent = ($scope.stad.sprints.completedPoints / $scope.stad.sprints.totalPoints) * 100;
+            $scope.stad.sprints.chartPercentDraw = (50 / $scope.stad.sprints.totalPoints) * $scope.stad.sprints.completedPoints;
+          }
+
+        }
+
+
+
+
+
+      }
+      function createStadIssue (){
+        $scope.stad.issues.openIssues = 0;
+
+        $scope.stad.issues.closedIssues = 0;
+
+        $scope.stad.issues.questionType = 0;
+        $scope.stad.issues.enhaType = 0;
+        $scope.stad.issues.bugType = 0;
+
+
+        $scope.stad.issues.chartPercent = 0;
+        $scope.stad.issues.chartPercentDraw = 0;
+
+        $scope.chartdata [0][0] = 0;
+
+
+        if($scope.rowCollectionIssues !== undefined &&
+          $scope.rowCollectionIssues !== null &&
+          $scope.rowCollectionIssues !== '' ){
+
+
+
+          for(var i = 0; i< $scope.rowCollectionIssues.length; i++){
+
+            if($scope.rowCollectionIssues[i].status == 'Closed'){
+              $scope.stad.issues.closedIssues += 1;
+
+            }
+            else {
+              $scope.stad.issues.openIssues += 1;
+            }
+
+
+            if($scope.rowCollectionIssues[i].type == 'Bug'){
+              $scope.stad.issues.bugType += 1;
+
+            }
+            else if($scope.rowCollectionIssues[i].type == 'Enhancement'){
+              $scope.stad.issues.enhaType += 1;
+
+            }
+            else {
+              $scope.stad.issues.questionType += 1;
+            }
+
+
+          }
+          if($scope.stad.issues.closedIssues !== 0){
+            $scope.stad.issues.chartPercent = ($scope.stad.issues.closedIssues / ($scope.stad.issues.closedIssues + $scope.stad.issues.openIssues)) * 100;
+            $scope.stad.sprints.chartPercentDraw = (50 / ($scope.stad.issues.closedIssues + $scope.stad.issues.openIssues)) * $scope.stad.issues.closedIssues;
+          }
+
+
+
+
+        }
+
+      }
+
+
 
 
 
@@ -5046,6 +5268,7 @@ angular.module('myAppAngularMinApp')
 
             $scope.rowCollectionUserStories = res.data;
             console.log("esto valen los userstories *********");
+
 
 
           }, function (err) {
@@ -5068,6 +5291,8 @@ angular.module('myAppAngularMinApp')
 
             $scope.rowCollectionSprints = res.data;
             /* nos los recorremos poniendo viewTableUs false*/
+
+
 
             if($scope.rowCollectionSprints !== undefined &&
               $scope.rowCollectionSprints !== null &&
@@ -5100,6 +5325,7 @@ angular.module('myAppAngularMinApp')
             console.log(res);
 
             $scope.rowCollectionIssues = res.data;
+
 
 
           }, function (err) {
@@ -8159,7 +8385,7 @@ angular.module('myAppAngularMinApp')
 
 
       /********************** new ****************************/
-      $scope.getGithubMessage = function ($index) {
+      $scope.getGithubMessage = function ($index, msg) {
 
 
         /* hay que mirar si se convierte bien en JSON y podemos coger cosas */
@@ -8185,7 +8411,7 @@ angular.module('myAppAngularMinApp')
 
 
           /* llamamos al servicio que parsee */
-          messageText = GithubService.parseGithubEvents(githubMessageJSON);
+          messageText = GithubService.parseGithubEvents(githubMessageJSON, $index, msg);
 
           /* mirar que devueleve */
 
@@ -9575,7 +9801,15 @@ angular.module('myAppAngularMinApp')
 
                datatemp.message.text = $scope.getInternalMessageForNotification(datatemp.message.text);
              }
+
+             else if(datatemp.message.serviceType == 'GITHUB'|| datatemp.message.serviceType == 'SCRUM' ){
+               datatemp.message.text = "a new event has occurred";
+
+             }
            }
+
+
+
          }
          else if (datatemp.message.messageType == 'FILE' && datatemp.message.filename !== undefined){
            datatemp.message.text = "attach new file "+datatemp.message.filename;

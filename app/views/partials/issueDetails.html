@@ -29,7 +29,7 @@
                                      </span>
 
 
-          <span class="subject2">
+          <span class="subject2" ng-if="rowCollectionIssues[tagIssue].userstories.length > 0">
             <p>This issue has been promoted to US:
             <span ng-if="rowCollectionIssues[tagIssue].userstories.length > 0"
                ng-repeat="rowus in rowCollectionIssues[tagIssue].userstories">
