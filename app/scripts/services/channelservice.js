@@ -66,16 +66,27 @@ angular.module('myAppAngularMinApp')
       }
 
 
-      function editChannel (groupid,channelid,data2) {
+      function editChannel (groupid,channelid,data2,data3, num) {
         var defered = $q.defer();
         var promise = defered.promise;
         var userid = $localStorage.id;
         console.log("entro en edit channel");
+
+        var dataVar = "";
+
+        if( num == 1){
+          dataVar = 'githubChannelPass='+data2+'&&githubChannelUsername='+data3;
+        }
+        else {
+          dataVar = 'channelName='+data2;
+
+        }
+
         $http({
           method: 'put',
           headers: {'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded'},
           url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+groupid +'/channels/'+channelid,
-          data: 'channelName='+data2
+          data: dataVar
 
         }).success(function(data) {
                 defered.resolve(data);
@@ -96,7 +107,7 @@ angular.module('myAppAngularMinApp')
 
 
 
-      function deleteChannel (groupid,channelid) {
+      function deleteChannel (groupid,channelid, pass) {
         var defered = $q.defer();
         var promise = defered.promise;
         var userid = $localStorage.id;

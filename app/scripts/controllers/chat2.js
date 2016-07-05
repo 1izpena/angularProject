@@ -172,6 +172,10 @@ angular.module('myAppAngularMinApp')
         $scope.modalsError.messageNewIssueRequiredSubModal = '';
 
 
+        $scope.modalsError.messageReloginBadCredentialsModal = '';
+
+
+
 
 
 
@@ -5150,6 +5154,23 @@ angular.module('myAppAngularMinApp')
 
 
 
+      $scope.initVarsDeleteGitChannelWebhooksModal = function(){
+        $scope.infoDeleteGitChannel = {};
+        $scope.infoDeleteGitChannel.arrReposOk = [];
+        $scope.infoDeleteGitChannel.arrReposError = [];
+      }
+
+
+
+
+      $scope.initVarsReloginGitDeleteChannelModal = function(){
+        $scope.modalsError.messageReloginBadCredentialsModal = '';
+        $scope.accountDelete = {};
+        $scope.accountDelete.password ="";
+      }
+
+
+
 
       $scope.initVarsNewChannelIntegrationModal = function(){
         /* las anteriores y estas */
@@ -5479,6 +5500,91 @@ angular.module('myAppAngularMinApp')
       }
     };
 
+
+      function loadInfoDeleteGitChannel (data){
+        $scope.initVarsDeleteGitChannelWebhooksModal();
+
+        console.log("***esto vale en loadInfoDeleteGitChannel data*********");
+        console.log(data);
+        $scope.infoDeleteGitChannel.channelName = data.channelName;
+        if(data.resultdeletehooks !== undefined &&
+          data.resultdeletehooks !== null &&
+          data.resultdeletehooks !== ''){
+          if(data.resultdeletehooks.arrReposOk !== undefined &&
+            data.resultdeletehooks.arrReposOk !== null &&
+            data.resultdeletehooks.arrReposOk !== ''){
+            if(data.resultdeletehooks.arrReposOk.length >0){
+              $scope.infoDeleteGitChannel.arrReposOk = data.resultdeletehooks.arrReposOk;
+
+              console.log("***esto vale en loadInfoDeleteGitChannel data.resultdeletehooks.arrReposOk*********");
+              console.log($scope.infoDeleteGitChannel.arrReposOk);
+            }
+          }
+          if(data.resultdeletehooks.arrReposError !== undefined &&
+            data.resultdeletehooks.arrReposError !== null &&
+            data.resultdeletehooks.arrReposError !== ''){
+            if(data.resultdeletehooks.arrReposError.length >0){
+              $scope.infoDeleteGitChannel.arrReposError = data.resultdeletehooks.arrReposError;
+
+              console.log("***esto vale en loadInfoDeleteGitChannel data.resultdeletehooks.arrReposError*********");
+              console.log($scope.infoDeleteGitChannel.arrReposError);
+            }
+          }
+
+        }
+
+      }
+
+
+
+
+
+
+      $scope.editChannel = function() {
+
+
+
+        if($scope.accountDelete.password == undefined ||
+          $scope.accountDelete.password == null ||
+          $scope.accountDelete.password == ''){
+          $scope.messageReloginBadCredentialsModal = "Field password is required.";
+        }
+        else {
+          ChannelService.editChannel($scope.tagGroup.id, $scope.tagChannel.id, $scope.accountDelete.password, $scope.tagChannel.githubUsername, 1)
+            .then(function (res) {
+
+
+              /* hay que meterlo en 1 array */
+              console.log("esto vale res de editchannnel");
+              console.log(res);
+
+              $scope.initVarsReloginGitDeleteChannelModal();
+              $("#reloginGitDeleteChannelModal").modal("hide");
+
+              loadInfoDeleteGitChannel(res);
+
+
+
+
+              $("#deleteChannelWebhooksModal").modal("show");
+
+
+            }, function (err) {
+              console.log("esto vale err de editchannel");
+              console.log(err);
+              $scope.initVarsReloginGitDeleteChannelModal();
+              $scope.modalsError.messageReloginBadCredentialsModal = err.message;
+            });
+        }
+
+
+
+
+
+
+
+
+      };
 
 
 
@@ -5998,7 +6104,7 @@ angular.module('myAppAngularMinApp')
 
             if($scope.channel.channelService == 1){
               /* para integracion con github */
-              $scope.githubchannel = channel;
+              $scope.githubchannel = $scope.channel;
               getGithubAccounts();
 
             }
@@ -6041,31 +6147,76 @@ angular.module('myAppAngularMinApp')
 
 
       $scope.deleteChannel = function(){
+
+
+
         ChannelService.deleteChannel($scope.tagGroup.id,$scope.tagChannel.id).then(
           function(data) {
             console.log("Delete channel OK");
             $("#deleteChannelModal").modal("hide");
+
+
+
             // Emitimos evento de desconexión a canales
             console.log("ha llamado disconnect de channel");
             Socket.emit('disconnectChannel');
             $scope.tagChannel='';
 
+            console.log("esto vale data en deletechannel");
+            console.log(data);
+
+
+            if(data.data.resultdeletehooks != undefined &&
+              data.data.resultdeletehooks != null &&
+              data.data.resultdeletehooks != ''){
+              loadInfoDeleteGitChannel(data.data);
+
+              $("#deleteChannelWebhooksModal").modal("show");
+
+            }
+
+
+
+
           },function(err){
             // Tratar el error
             console.log("Hay error en delete channel: " + err.data.message);
 
-
-            $scope.errorG = err.data.message;
             $("#deleteChannelModal").modal("hide");
-            // Emitimos evento de desconexión al grupo
-            console.log("ha llamado disconnect de grupo");
-            Socket.emit('disconnect');
-            $scope.tagGroup='';
 
-            $("#errorGroupModal").modal("show");
 
-          }
-        );
+
+            console.log(err);
+            /* si es error 401 y el canal es tipo github y url_documentation */
+
+            if(err.status == 401 && err.data.service == "github"){
+
+              console.log("es error de github");
+
+                /*tengo que hacer una modal de logueo, se que esa modal es para borrar */
+                $scope.initVarsReloginGitDeleteChannelModal();
+                $("#reloginGitDeleteChannelModal").modal("show");
+
+
+
+
+
+
+            }
+            else{
+              $("#reloginGitDeleteChannelModal").modal("hide");
+              $scope.errorG = err.data.message;
+              $("#errorGroupModal").modal("show");
+
+            }
+
+
+
+          });
+
+
+
+
       };
 
 

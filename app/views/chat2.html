@@ -1690,6 +1690,201 @@
 
 
 
+  <!------------------ Modal relogin in github to delete --------------------------------------------------->
+
+  <div id="reloginGitDeleteChannelModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                  ng-click="initVarsReloginGitDeleteChannelModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Sign in to GitHub:<span class="helpico"></span></h4>
+
+
+        </div>
+
+        <div class="modal-body">
+
+
+
+
+
+          <spinner name="html5spinnerIntegration" ng-cloak="">
+            <div class="overlay"></div>
+            <div class="spinner">
+              <div class="double-bounce1"></div>
+              <div class="double-bounce2"></div>
+            </div>
+            <div class="please-wait">Please Wait...</div>
+          </spinner>
+
+
+          <div class="form-group">
+
+            <!-- <h4><strong>Github Service Configuration: </strong></h4> -->
+
+
+            <label>Authentication failed: </label>
+
+            <div id="messageModal4" class="alert alert-danger" role="alert">
+              <p> Authenticated to Github as: <strong> {{tagChannel.githubUsername}}</strong>
+                <i class="glyphicon glyphicon-remove"></i>
+
+
+              </p>
+
+            </div>
+          </div>
+
+
+          <div class="form-group" >
+
+            <label for="githubPassTxt">Password:</label>
+            <input type="password" required="true" class="form-control" name="githubPassTxt3" id="githubPassTxt3" placeholder="Enter Github password..." ng-model="accountDelete.password">
+
+            <div class="alert alert-danger" role="alert" ng-show="modalsError.messageReloginBadCredentialsModal !== ''">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageReloginBadCredentialsModal=''">
+                <span aria-hidden="true">&times;</span>
+              </button>
+
+              {{modalsError.messageReloginBadCredentialsModal}}
+            </div>
+
+
+          </div>
+
+
+
+
+        </div>
+        <!--end modalbody -->
+
+
+        <div class="modal-footer">
+          <div>
+
+            <button type="submit" class="btn btn-success" id="btn-deletechannel" ng-click="editChannel()"><span class="fa fa-check"></span> Accept</button>
+            <button type="button" class="btn btn-danger" id="btn-close3" data-dismiss="modal" ng-click="initVarsReloginGitDeleteChannelModal()"><span class="fa fa-remove"></span> Close</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!---------------------- end Modal relogin in github to delete ------------------------------------------->
+
+  <!---------------------- end Modal view delete webhooks ------------------------------------------->
+
+
+  <div id="deleteChannelWebhooksModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                  ng-click="initVarsDeleteChannelWebhooksModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Github Channel: <span class="helpico"></span></h4>
+        </div>
+
+        <div class="modal-body">
+
+
+
+
+          <!--<div class="alert alert-danger" role="alert" ng-show="modalsError.messageNewChannelModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewChannelModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            {{modalsError.messageNewChannelModal}}
+          </div>-->
+
+
+
+
+          <div class="form-group" >
+            <label> Feedback of Github Service Channel: </label>
+
+
+            <div id="messageModal3" class="alert alert-success" role="alert">
+              <p> <strong>Successfully </strong>deleted channel: <strong> {{infoDeleteGitChannel.channelName}}</strong>
+                <!--<span class="fa fa-check"></span>-->
+                <i class="glyphicon glyphicon-ok"></i>
+              </p>
+            </div>
+
+            <table class="table">
+              <thead>
+              <tr>
+                <th>  </th>
+                <th>Repository</th>
+                <th>State</th>
+
+              </tr>
+              </thead>
+              <tbody>
+
+
+              <tr  ng-repeat="data in infoDeleteGitChannel.arrReposOk" ng-show="infoDeleteGitChannel.arrReposOk.length > 0">
+
+                <td><span class="fa fa-check"></span></td>
+                <td>{{ data.item.name }} ({{ data.item.id }})</td>
+                <td>204 : Unattached</td>
+              </tr>
+
+              <tr  ng-repeat="data in infoDeleteGitChannel.arrReposError" ng-show="infoDeleteGitChannel.arrReposError.length > 0">
+                <td><span class="fa fa-close"></span></td>
+                <td>{{ data.item.name }} ({{ data.item.id }})</td>
+                <td>{{ data.code }} : {{ data.message.message }}</td>
+
+              </tr>
+
+
+              </tbody>
+            </table>
+
+
+          </div>
+
+
+        </div>
+        <!--end modalbody -->
+
+
+        <!-- crear los hooks y el canal, es el ultimo paso  -->
+        <div class="modal-footer">
+          <div>
+
+
+            <button type="button" class="btn btn-danger" id="btn-new-channel-github-close2"
+                    data-dismiss="modal" ng-click="initVarsDeleteGitChannelWebhooksModal()">
+              <span class="fa fa-remove"></span> Close</button>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <!---------------------- end Modal view delete webhooks ------------------------------------------->
+
+
+
+
 
 
   <!-- New Channel Modal -->
@@ -1868,8 +2063,9 @@
 
 
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success" ng-click="deleteChannel()"><span class="fa fa-trash-o"> Remove</span></button>
-          <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> Close</span></button>
+          <button type="submit" class="btn btn-success" ng-click="deleteChannel()"><span class="fa fa-trash-o"> </span> Remove</button>
+
+          <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> </span> Close</button>
         </div>
 
       </div>
